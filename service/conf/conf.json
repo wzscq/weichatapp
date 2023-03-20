@@ -1,0 +1,8 @@
+{
+  "service":{
+    "port":"localhost:9190"
+  },
+  "public":{
+    "token":""
+  }
+}
