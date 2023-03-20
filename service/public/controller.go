@@ -39,6 +39,8 @@ func (pc *PublicController)normalMessage(c *gin.Context){
 		c.String(http.StatusOK, "success")
 		return 
 	}
+
+	log.Printf("from:%s to: %s type:%s content:%s",req.FromUserName,req.ToUserName,req.MsgType,req.Content)
 	
 	//调用openai进行问答
 	answer:="目前仅支持文本消息"
@@ -48,7 +50,7 @@ func (pc *PublicController)normalMessage(c *gin.Context){
 
 	//返回结果
 	resp:=CreateTextResponse(&req,answer)
-	
+	log.Println(resp)
 	//处理消息
 	log.Println("normalMessage")
 	c.XML(http.StatusOK, resp)

@@ -6,6 +6,7 @@ import (
 	"strings"
 	"fmt"
 	"log"
+	"encoding/xml"
 )
 
 const (
@@ -32,6 +33,7 @@ type NomalMessageRequest struct {
 }
 
 type TextMessageResponse struct {
+	XMLName xml.Name `xml:"xml"`
 	ToUserName string `xml:"ToUserName"`
 	FromUserName string `xml:"FromUserName"`
 	CreateTime string `xml:"CreateTime"`
@@ -60,13 +62,14 @@ func CheckSignature(signature string, timestamp string, nonce string,token strin
 	return false
 }
 
-func CreateTextResponse(req *NomalMessageRequest,answer string)(TextMessageResponse){
-	var response TextMessageResponse
-	response.ToUserName=req.FromUserName
-	response.FromUserName=req.ToUserName
-	response.CreateTime=req.CreateTime
-	response.MsgType=MsgTypeText
-	response.Content=req.Content
+func CreateTextResponse(req *NomalMessageRequest,answer string)(*TextMessageResponse){
+	response:=&TextMessageResponse{
+		ToUserName:req.FromUserName,
+		FromUserName:req.ToUserName,
+		CreateTime:req.CreateTime,
+		MsgType:MsgTypeText,
+		Content:answer,
+	}
 	return response
 }
 
