@@ -37,7 +37,10 @@ func main() {
 	}))
 
 	//初始化openai代理控制器
-	publicController:=public.PublicController{Token:conf.Public.Token}
+	publicController:=public.PublicController{
+		Token:conf.Public.Token,
+		OpenaiproxyConf:conf.Openaiproxy,
+	}
 
 	//绑定路由
 	publicController.Bind(router)

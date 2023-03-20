@@ -4,5 +4,9 @@
   },
   "public":{
     "token":""
+  },
+  "openaiproxy":{
+    "url":"http://8.222.203.139/openai/v1/chat/completions/GPT3Dot5Turbo",
+    "maxTokens":500
   }
 }

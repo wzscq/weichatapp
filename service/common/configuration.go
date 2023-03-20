@@ -14,9 +14,15 @@ type publicConf struct {
 	Token string `json:"token"`
 }
 
+type OpenaiproxyConf struct {
+	Url string `json:"url"`
+	MaxTokens int `json:"maxtokens"`
+}
+
 type Config struct {
 	Service serviceConf `json:"service"`
 	Public publicConf `json:"public"`
+	Openaiproxy OpenaiproxyConf `json:"openaiproxy"`
 }
 
 var gConfig Config

@@ -4,10 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"weichatapp/common"
 )
 
 type PublicController struct {
 	Token string
+	OpenaiproxyConf common.OpenaiproxyConf
 }
 
 func (pc *PublicController)checkSignature(c *gin.Context){
@@ -45,7 +47,7 @@ func (pc *PublicController)normalMessage(c *gin.Context){
 	//调用openai进行问答
 	answer:="目前仅支持文本消息"
 	if (req.MsgType==MsgTypeText){
-		answer=ChatCompletion(req.Content)
+		answer=ChatCompletion(req.Content,pc.OpenaiproxyConf)
 	}
 
 	//返回结果
