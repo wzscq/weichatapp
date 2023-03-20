@@ -7,10 +7,10 @@ import (
 )
 
 type SignatureRequest struct {
-	Signature string `json:"signature"`
-	Timestamp string `json:"timestamp"`
-	Nonce string `json:"nonce"`
-	Echostr string `json:"echostr"`
+	Signature string `form:"signature"`
+	Timestamp string `form:"timestamp"`
+	Nonce string `form:"nonce"`
+	Echostr string `form:"echostr"`
 }
 
 type PublicController struct {
@@ -20,7 +20,7 @@ type PublicController struct {
 func (pc *PublicController)checkSignature(c *gin.Context){
 	//获取请求体中携带的消息
 	var req SignatureRequest
-	if err := c.BindJSON(&req); err != nil {
+	if err := c.ShouldBind(&req); err != nil {
 		log.Println(err)
 		c.IndentedJSON(http.StatusOK, nil)
 		return 
@@ -39,5 +39,5 @@ func (pc *PublicController)checkSignature(c *gin.Context){
 }
 
 func (opc *PublicController) Bind(router *gin.Engine) {
-	router.POST("/public/", opc.checkSignature)
+	router.GET("/public/", opc.checkSignature)
 }
