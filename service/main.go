@@ -14,8 +14,8 @@ func main() {
 	log.SetFlags(log.Lshortfile | log.LstdFlags)
 
 	//初始化时区
-	//var cstZone = time.FixedZone("CST", 8*3600) // 东八
-	//time.Local = cstZone
+	var cstZone = time.FixedZone("CST", 8*3600) // 东八
+	time.Local = cstZone
 
 	confFile:="conf/conf.json"
 	if len(os.Args)>1 {
