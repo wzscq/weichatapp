@@ -14,7 +14,7 @@ func (client *MQTTRedirectClient)SendMessage(sessionid,msg string){
 		Broker:client.Broker,
 		User:client.User,
 		Password:client.Password,
-		ClientID:sessionid,
+		ClientID:"redirect_"+sessionid,
 	}
 	mqttClient.Init()
 	mqttClient.Publish(client.Topic,msg)

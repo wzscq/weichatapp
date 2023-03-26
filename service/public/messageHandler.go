@@ -1,10 +1,18 @@
 package public
 
+import (
+	"log"
+)
+
 const (
 	//消息类型
 	MsgTypeText = "text"
-	MsgTypeSubscribe = "subscribe"
-	MsgTypeUnsubscribe = "unsubscribe"
+	MsgTypeEvent = "event"
+)
+
+const (
+	EventTypeSubscribe = "subscribe"
+	EventTypeUnsubscribe = "unsubscribe"
 )
 
 type MessageRequest struct {
@@ -12,6 +20,7 @@ type MessageRequest struct {
 	FromUserName string `xml:"FromUserName"`
 	CreateTime string `xml:"CreateTime"`
 	MsgType string `xml:"MsgType"`
+	Event string `xml:"Event"`
 	Content string `xml:"Content"`
 	MsgId string `xml:"MsgId"`
 	MsgDataId string `xml:"MsgDataId"`
@@ -41,11 +50,14 @@ func GetMessageHandler(
 		return &TextMessageHandler{
 			ChatCompletionHandler:chatCompletionHandler,
 		}
-	} else if msg.MsgType==MsgTypeSubscribe||
-		msg.MsgType==MsgTypeUnsubscribe	 {
-		return &RedirectMessageHandler{
+	} else if msg.MsgType==MsgTypeEvent {
+		if msg.Event==EventTypeSubscribe||msg.Event==EventTypeUnsubscribe	 {
+			return &RedirectMessageHandler{
 			Client:redirectClient,
+			}
 		}
+	} else {
+		log.Printf("not supported message type: %s",msg.MsgType)
 	}
 	return nil
 }
