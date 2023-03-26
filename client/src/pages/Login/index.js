@@ -1,6 +1,5 @@
 import { Input,Space,Button } from 'antd';
 import { useState } from 'react';
-import { getUserID } from '../../utils/gptfunctions';
 
 import './index.css';
 

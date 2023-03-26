@@ -34,7 +34,7 @@ export default function Main({userID,setUserID}){
       newRecords=newRecords.slice(newRecords.length-20);
     }
     //将消息发送给openaiProxy
-    chatCompleteProxy(newRecords).then((content)=>{
+    chatCompleteProxy(userID,newRecords).then((content)=>{
       setRecords([...newRecords,{content,role:'assistant'}]);
     });
     setRecords([...newRecords,{content:'正在处理您的请求，请稍等 ...',role:'assistant'}]);

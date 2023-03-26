@@ -1,20 +1,10 @@
 import axios from "axios";
 
-var g_userid="";
-
-const getUserID=()=>{
-  return g_userid;
-}
-
-const setUserID=(userid)=>{
-  g_userid=userid;
-}
-
 //chatproxy
 //const chatProxyApi=process.env.REACT_APP_OPENAI_HOST+"/openaiproxy/openai/v1/chat/completions/GPT3Dot5Turbo";
 const chatProxyApi=process.env.REACT_APP_OPENAI_HOST+"/openaiproxy/ChatCompletion";
 console.log(chatProxyApi)
-const chatCompleteProxy=async (messages)=>{
+const chatCompleteProxy=async (userID,messages)=>{
   
   const reponse= await axios({
     url:chatProxyApi,
@@ -24,7 +14,7 @@ const chatCompleteProxy=async (messages)=>{
       'Content-Type': 'application/json'
     },
     data:{
-      sessionid:g_userid,
+      sessionid:userID,
       messages:messages
     }});
 
@@ -36,7 +26,5 @@ const chatCompleteProxy=async (messages)=>{
 }
 
 export {
-  chatCompleteProxy,
-  getUserID,
-  setUserID
+  chatCompleteProxy
 }

@@ -12,14 +12,14 @@
     "maxTokens":1000
   },
   "messageCache":{
-    "server":"localhost:6479",
+    "server":"8.222.203.139:6479",
     "password":"",
     "db":10,
     "expired":"300s",
     "count":20
   },
   "accountCache":{
-    "server":"localhost:6479",
+    "server":"8.222.203.139:6479",
     "password":"",
     "db":11
   },
