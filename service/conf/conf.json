@@ -1,12 +1,34 @@
 {
   "service":{
-    "port":"localhost:9190"
+    "port":"0.0.0.0:80"
   },
   "public":{
-    "token":""
+    "token":"2gb6g99dq52gb6g99dq5",
+    "appid":"wx14be24d6ff80bac2",
+    "secret":"1a12615c69e554fb4901f6088149b31f"
   },
   "openaiproxy":{
-    "url":"http://8.222.203.139/openai/v1/chat/completions/GPT3Dot5Turbo",
-    "maxTokens":500
+    "url":"http://8.222.203.139:8080/openaiproxy/openai/v1/chat/completions/GPT3Dot5Turbo",
+    "maxTokens":1000
+  },
+  "messageCache":{
+    "server":"localhost:6479",
+    "password":"",
+    "db":10,
+    "expired":"300s",
+    "count":20
+  },
+  "accountCache":{
+    "server":"localhost:6479",
+    "password":"",
+    "db":11
+  },
+  "mqtt":{
+    "broker":"tcp://121.37.185.248:1983",
+    "password":"123456",
+    "user":"mosquitto",
+    "clientID":"weichatapp_client_1",
+    "redirectTopic":"redirect_weichat_message",
+    "billTopic":"gpt_bill_rec"
   }
 }

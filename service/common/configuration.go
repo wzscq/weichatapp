@@ -12,6 +12,8 @@ type serviceConf struct {
 
 type publicConf struct {
 	Token string `json:"token"`
+	AppID string `json:"appid"`
+	Secret string `json:"secret"`
 }
 
 type OpenaiproxyConf struct {
@@ -19,10 +21,36 @@ type OpenaiproxyConf struct {
 	MaxTokens int `json:"maxtokens"`
 }
 
+type MessageCacheConf struct {
+	Server string `json:"server"`
+	Password string `json:"password"`
+	DB int `json:"db"`
+	Expire string `json:"expire"`
+	Count int `json:"count"`
+}
+
+type AccountCacheConf struct {
+	Server string `json:"server"`
+	Password string `json:"password"`
+	DB int `json:"db"`
+}
+
+type mqttConf struct {
+	Broker string `json:"broker"`
+	User string `json:"user"`
+	Password string `json:"password"`
+	ClientID string `json:"clientID"`
+	RedirectTopic string `json:"redirectTopic"`
+	BillTopic string `json:"billTopic"`
+}
+
 type Config struct {
 	Service serviceConf `json:"service"`
 	Public publicConf `json:"public"`
 	Openaiproxy OpenaiproxyConf `json:"openaiproxy"`
+	MessageCache MessageCacheConf `json:"messageCache"`
+	AccountCache AccountCacheConf `json:"accountCache"`
+	MQTT mqttConf `json:"mqtt"`
 }
 
 var gConfig Config

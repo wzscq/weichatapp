@@ -1,0 +1,36 @@
+.chat-item {
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+.chat-item-content {
+  width: calc(100% - 100px);
+  display: inline-block;
+  padding: 10px;
+  background-color: #0d1117;
+  border-radius: 1px;
+  border: 0px solid blue;
+  color: white;
+  text-align: left;
+}
+
+.chat-item-avatar {
+  text-align: center;
+  line-height: 40px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.chat-item-avatar.assistant {
+  width: 40px;
+  height: 40px;
+  float: left;
+  color: green;
+}
+
+.chat-item-avatar.user {
+  width: 40px;
+  height: 40px;
+  float: left;
+  color: #4096ff;
+}
