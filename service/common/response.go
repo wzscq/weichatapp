@@ -19,6 +19,7 @@ const (
 	ResultWrongRequest = 10000001
 	ResultCreateOpenAiChatCompletionError = 90100001
 	ResultMqttClientError = 90100002
+	ResultWeiChatAPIError = 90100003
 )
 
 var errMsg = map[int]CommonRsp{
@@ -40,6 +41,11 @@ var errMsg = map[int]CommonRsp{
 	ResultMqttClientError:CommonRsp{
 		ErrorCode:ResultMqttClientError,
 		Message:"mqtt客户端未能正确创建",
+		Error:true,
+	},
+	ResultWeiChatAPIError:CommonRsp{
+		ErrorCode:ResultWeiChatAPIError,
+		Message:"微信API调用失败",
 		Error:true,
 	},
 }

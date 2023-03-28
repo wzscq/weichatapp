@@ -34,6 +34,26 @@ type CSMessageResponse struct {
 	ErrMsg string `json:"errmsg"`
 }
 
+type Scene struct {
+	SceneID string `json:"scene_id"`
+}
+
+type ActionInfo struct {
+	Scene  Scene  `json:"scene"`
+}
+
+type GetTicketRequest struct {
+	ExpireSeconds int `json:"expire_seconds"`
+	ActionName string `json:"action_name"`
+	ActionInfo  ActionInfo `json:"action_info"`
+}
+
+type GetTicketResponse struct {
+	Ticket string `json:"ticket"`
+	ExpireSeconds int `json:"expire_seconds"`
+	URL string `json:"url"`
+}
+
 func CheckSignature(signature string, timestamp string, nonce string,token string)(bool) {
 	//将token、timestamp、nonce三个参数放到一个数组中
 	strs:=[]string{token,timestamp,nonce}
@@ -53,6 +73,37 @@ func CheckSignature(signature string, timestamp string, nonce string,token strin
 	log.Printf("checkSignature failed,token:%s timestamp:%s nonce:%s \n",token,timestamp,nonce)
 	log.Printf("checkSignature failed,sha1 %s,signature %s \n",sha1Str,signature)
 	return false
+}
+
+func GetTiket(reqBody *GetTicketRequest)(*GetTicketResponse,error){
+	//发送http请求
+	ticketUrl:="https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+GetAccessToken()
+	postJson,_:=json.Marshal(reqBody)
+	postBody:=bytes.NewBuffer(postJson)
+	log.Println("http.Post ",ticketUrl,string(postJson))
+	resp,err:=http.Post(ticketUrl,"application/json",postBody)
+
+	if err != nil || resp==nil || resp.StatusCode != 200 { 
+		log.Println("http.Post error",err)
+		return nil,err
+	}
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Println("ioutil.ReadAll error",err)
+		return nil,err
+	}
+
+	var ticketResponse GetTicketResponse
+	err=json.Unmarshal(body,&ticketResponse)
+	if err != nil {
+		log.Println("json.Unmarshal error",err)
+		return nil,err
+	}
+
+	log.Println("http.Post response",string(body))
+	return &ticketResponse,nil
 }
 
 func PostCSMessage(openid,message string){

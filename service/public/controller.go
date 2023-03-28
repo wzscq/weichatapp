@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"weichatapp/common"
 )
 
 type PublicController struct {
@@ -54,7 +55,31 @@ func (pc *PublicController)normalMessage(c *gin.Context){
 	c.String(http.StatusOK, "success")
 }
 
+func (pc *PublicController)getTicket(c *gin.Context){
+	log.Println("getTicket start")
+	//获取请求体中携带的消息
+	var req GetTicketRequest
+	if err := c.ShouldBind(&req); err != nil {
+		log.Println(err)
+		c.String(http.StatusOK, "")
+		return 
+	}
+
+	resp,err:=GetTiket(&req)
+	if err!=nil {
+		rsp:=common.CreateResponse(common.CreateError(common.ResultWeiChatAPIError,nil),resp)
+		c.IndentedJSON(http.StatusOK, rsp)
+		return
+	}
+
+	rsp:=common.CreateResponse(nil,resp)
+	c.IndentedJSON(http.StatusOK, rsp)
+	//处理消息
+	log.Println("getTicket end")
+}
+
 func (opc *PublicController) Bind(router *gin.Engine) {
 	router.GET("/public/", opc.checkSignature)
 	router.POST("/public/",opc.normalMessage)
+	router.POST("/public/getTicket",opc.getTicket)
 }
