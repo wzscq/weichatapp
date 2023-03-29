@@ -6,17 +6,19 @@ type MQTTRedirectClient struct {
 	User string
 	Password string
 	ClientID string
+	mqttClient *MQTTClient
 }
 
 func (client *MQTTRedirectClient)SendMessage(sessionid,msg string){
 	//初始化mqtt客户端
-	mqttClient:=&MQTTClient{
-		Broker:client.Broker,
-		User:client.User,
-		Password:client.Password,
-		ClientID:"redirect_"+sessionid,
+	if client.mqttClient == nil {
+		client.mqttClient=&MQTTClient{
+			Broker:client.Broker,
+			User:client.User,
+			Password:client.Password,
+			ClientID:client.ClientID,
+		}
+		client.mqttClient.Init()
 	}
-	mqttClient.Init()
-	mqttClient.Publish(client.Topic,msg)
-	mqttClient.Close()
+	client.mqttClient.Publish(client.Topic,msg)
 }

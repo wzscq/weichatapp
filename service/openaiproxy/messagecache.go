@@ -14,15 +14,19 @@ type MessageCache struct {
 	DB int 
 	Expire time.Duration
 	Count int
+	client *redis.Client
 }
 
 func (this *MessageCache)GetRedisClient()(*redis.Client){
+	if this.client==nil{
+		this.client=redis.NewClient(&redis.Options{
+			Addr:     this.Server,
+			Password: this.Password, 
+			DB:       this.DB,  
+		})
+	}
 	//初始化redis
-	return redis.NewClient(&redis.Options{
-		Addr:     this.Server,
-		Password: this.Password, 
-		DB:       this.DB,  
-	})
+	return this.client
 }
 
 func (this *MessageCache)SetMessages(key string,messages []openai.ChatCompletionMessage){
