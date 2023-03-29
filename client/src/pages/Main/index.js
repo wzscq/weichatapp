@@ -50,7 +50,7 @@ export default function Main({userID,setUserID}){
       <div className="header">
         ChatGPT Proxy
         <Button onClick={onLogout} size='small' style={{float:"right",marginTop:10,marginRight:10}} type="primary">Logout</Button>
-        <div style={{fontWeight:100,float:'right',marginRight:10}}>{userID}</div>
+        <div style={{display:'none',fontWeight:100,float:'right',marginRight:10}}>{userID}</div>
       </div>
       <div className='content'>
         <SplitPane resizerOptions={horizontalResizerOptions} initialSizes={[80,20]} split="horizontal" collapse={false}>

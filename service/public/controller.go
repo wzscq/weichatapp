@@ -65,7 +65,7 @@ func (pc *PublicController)getTicket(c *gin.Context){
 		return 
 	}
 
-	resp,err:=GetTiket(&req)
+	resp,err:=GetTicket(&req)
 	if err!=nil {
 		rsp:=common.CreateResponse(common.CreateError(common.ResultWeiChatAPIError,nil),resp)
 		c.IndentedJSON(http.StatusOK, rsp)

@@ -35,7 +35,7 @@ type CSMessageResponse struct {
 }
 
 type Scene struct {
-	SceneID string `json:"scene_id"`
+	SceneID int64 `json:"scene_id"`
 }
 
 type ActionInfo struct {
@@ -52,6 +52,7 @@ type GetTicketResponse struct {
 	Ticket string `json:"ticket"`
 	ExpireSeconds int `json:"expire_seconds"`
 	URL string `json:"url"`
+	SceneID int64 `json:"sceneID"`
 }
 
 func CheckSignature(signature string, timestamp string, nonce string,token string)(bool) {
@@ -75,7 +76,8 @@ func CheckSignature(signature string, timestamp string, nonce string,token strin
 	return false
 }
 
-func GetTiket(reqBody *GetTicketRequest)(*GetTicketResponse,error){
+func GetTicket(reqBody *GetTicketRequest)(*GetTicketResponse,error){
+	reqBody.ActionInfo.Scene.SceneID=GetSceneID()
 	//发送http请求
 	ticketUrl:="https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+GetAccessToken()
 	postJson,_:=json.Marshal(reqBody)
@@ -102,7 +104,8 @@ func GetTiket(reqBody *GetTicketRequest)(*GetTicketResponse,error){
 		return nil,err
 	}
 
-	log.Println("http.Post response",string(body))
+	ticketResponse.SceneID=reqBody.ActionInfo.Scene.SceneID
+
 	return &ticketResponse,nil
 }
 

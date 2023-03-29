@@ -25,6 +25,31 @@ const chatCompleteProxy=async (userID,messages)=>{
   return reponse.data?.result;
 }
 
+const getTicketUrl = process.env.REACT_APP_OPENAI_HOST+"/public/getTicket";
+
+const scene_id=787;
+
+const getTicketRequest = {
+  "expire_seconds": 600, 
+  "action_name": "QR_SCENE", 
+  "action_info": 
+  {"scene": {"scene_id": scene_id}}
+}
+
+const getTicket = async ()=>{
+  const response = await axios({
+    url:getTicketUrl,
+    timeout:300000,
+    method:"post",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data:getTicketRequest
+  });
+  return response.data;
+}
+
 export {
-  chatCompleteProxy
+  chatCompleteProxy,
+  getTicket
 }

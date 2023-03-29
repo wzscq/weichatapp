@@ -21,6 +21,7 @@ type MessageRequest struct {
 	CreateTime string `xml:"CreateTime"`
 	MsgType string `xml:"MsgType"`
 	Event string `xml:"Event"`
+	EventKey string `xml:"EventKey"`
 	Content string `xml:"Content"`
 	MsgId string `xml:"MsgId"`
 	MsgDataId string `xml:"MsgDataId"`
@@ -51,13 +52,14 @@ func GetMessageHandler(
 			ChatCompletionHandler:chatCompletionHandler,
 		}
 	} else if msg.MsgType==MsgTypeEvent {
-		if msg.Event==EventTypeSubscribe||msg.Event==EventTypeUnsubscribe	 {
+		//if msg.Event==EventTypeSubscribe||msg.Event==EventTypeUnsubscribe	 {
 			return &RedirectMessageHandler{
 			Client:redirectClient,
 			}
-		}
-	} else {
-		log.Printf("not supported message type: %s",msg.MsgType)
+		//}
 	}
+		
+	log.Printf("not supported message type: %s",msg.MsgType)
+
 	return nil
 }
