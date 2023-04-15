@@ -1,0 +1,10 @@
+.bottom-banner {
+    width: 1400px;
+    margin: auto;
+    background-color: white;
+    margin-top: 50px;
+}
+
+.bottom-banner img {
+    width: 200px;
+}

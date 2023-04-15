@@ -1,5 +1,6 @@
 import React, { useState,useRef,useEffect } from 'react';
 import { SplitPane } from "react-collapse-pane"; 
+import { useNavigate } from "react-router-dom";
 
 import ChatInput from './ChatInput';
 import ChatList from './ChatList';
@@ -20,7 +21,7 @@ const horizontalResizerOptions={
   grabberSize: '2px',
 }
 
-const initContent='你好，我是万能的小助理，有什么需要我帮忙处理的问题请在下方问题框中输入后点击右下角的蓝色发送按钮，我将立即帮您处理';
+const initContent='你好，我VIPGPT智能聊天助手，请在下方问题框中输入问题后点击右下角的蓝色发送按钮，我将立即帮您解答。';
 
 const initialRecords=[
   {content:initContent,role:'assistant',length:initContent.length,viewLength:0}
@@ -29,6 +30,7 @@ const initialRecords=[
 export default function Main({userID,setUserID}){
   const [records,setRecords]=useState(initialRecords);
   const refList = useRef();
+  const navigate = useNavigate();
 
   const onSend=(text)=>{
     let newRecords=[...records,{content:text,role:'user',viewLength:text.length,length:text.length}];
@@ -45,7 +47,7 @@ export default function Main({userID,setUserID}){
 
   const onLogout=()=>{
     localStorage.removeItem("userID");
-    setUserID("");
+    navigate('/VIPGPTLogin');
   }
 
   useEffect(()=>{
@@ -75,7 +77,7 @@ export default function Main({userID,setUserID}){
   return (
     <div className='chat-main'>
       <div className="header">
-        ChatGPT Proxy
+        VIPGPT
         <Button onClick={onLogout} size='small' style={{float:"right",marginTop:10,marginRight:10}} type="primary">Logout</Button>
         <div style={{display:'none',fontWeight:100,float:'right',marginRight:10}}>{userID}</div>
       </div>

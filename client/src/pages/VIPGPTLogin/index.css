@@ -1,0 +1,16 @@
+.login-page {
+  width: 100vw;
+  height: 100vh;
+  font: 14px / 1.5 Helvetica Neue,Helvetica,Arial,Hiragino Sans GB,Hiragino Sans GB W3,Microsoft YaHei UI,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+}
+
+.login-page .content {
+  width: 100%;
+  height: calc(100vh - 100px);
+  position: relative;
+  background-color: #eee5e5b2;
+  background: url(../../images/login_background.png);
+  overflow: hidden;
+}
+
+

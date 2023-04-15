@@ -1,0 +1,10 @@
+.other-page {
+  width: 100vw;
+  height: 100vh;
+}
+
+.other-page .content {
+    font: 28px / 1.5 Helvetica Neue,Helvetica,Arial,Hiragino Sans GB,Hiragino Sans GB W3,Microsoft YaHei UI,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+    text-align: center;
+    padding-top: 100px;
+}

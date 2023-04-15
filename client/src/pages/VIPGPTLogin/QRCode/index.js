@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import mqtt from 'mqtt';
+import { useNavigate } from "react-router-dom";
 import {getTicket} from '../../../utils/gptfunctions';
 import Loading from './Loading';
 
@@ -15,9 +16,10 @@ const initTicket = {
 
 var g_MQTTClient=null;
 
-export default function QRCode({setUserID}){
+export default function QRCode(){
   const [ticket,setTicket]=useState(initTicket);
-
+  const navigate = useNavigate();
+  
   useEffect(()=>{
     if(ticket.loaded===false&&ticket.loading===false){
       setTicket({...ticket,loading:true});
@@ -62,7 +64,9 @@ export default function QRCode({setUserID}){
       });
       g_MQTTClient.on('message', (topic, payload, packet) => {
           console.log("receive message topic :"+topic+" content :"+payload.toString());
-          setUserID(payload.toString());
+          //setUserID(payload.toString());
+          localStorage.setItem('userID',payload.toString());
+          navigate('/VIPGPTMain');
           setTimeout(()=>{
             g_MQTTClient.end();
             g_MQTTClient=null;
@@ -78,7 +82,7 @@ export default function QRCode({setUserID}){
       connectMqtt('qrlogin/'+ticket?.ticket?.sceneID);
     }
 
-  },[ticket,setUserID]);
+  },[ticket,navigate]);
 
   return (
     <div className='qr-code'>
