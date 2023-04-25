@@ -25,10 +25,10 @@ func (opc *OpenaiproxyController)ChatCompletion(c *gin.Context){
 		c.String(http.StatusOK, "不知道你在说什么")
 		return 
 	}
-
-	result:=opc.ChatCompletionHandler.ProxyChatCompletion(req.Sessionid,req.Messages)
 	//处理消息
-	log.Println("ChatCompletion")
+	log.Println("ChatCompletion Sessionid:",req.Sessionid)
+	result:=opc.ChatCompletionHandler.ProxyChatCompletion(req.Sessionid,req.Messages)
+	
 	//返回结果
 	rsp:=common.CreateResponse(nil,result)
 	c.IndentedJSON(http.StatusOK, rsp)

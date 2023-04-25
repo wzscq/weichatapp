@@ -28,7 +28,7 @@
     "password":"123456",
     "user":"mosquitto",
     "clientID":"weichatapp_client_1",
-    "redirectTopic":"redirect_weichat_message",
-    "billTopic":"gpt_bill_rec"
+    "redirectTopic":"weichatapp/redirect_weichat_message",
+    "billTopic":"weichatapp/gpt_bill_rec"
   }
 }

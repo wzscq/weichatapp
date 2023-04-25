@@ -6,11 +6,11 @@
 
 .login-page .content {
   width: 100%;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 50px);
   position: relative;
   background-color: #eee5e5b2;
-  background: url(../../images/login_background.png);
-  overflow: hidden;
+  background: url(../../images/login_background.jpg);
+  overflow: auto;
 }
 
 
