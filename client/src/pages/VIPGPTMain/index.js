@@ -27,11 +27,12 @@ const initialRecords=[
   {content:initContent,role:'assistant',length:initContent.length,viewLength:0}
 ];  
 
-export default function Main({userID,setUserID}){
+export default function Main(){
   const [records,setRecords]=useState(initialRecords);
   const refList = useRef();
   const navigate = useNavigate();
-
+  const userID=localStorage.getItem("userID");
+  
   const onSend=(text)=>{
     let newRecords=[...records,{content:text,role:'user',viewLength:text.length,length:text.length}];
     //如果newRecords中的记录数>20个，就仅保留最后的20个记录
