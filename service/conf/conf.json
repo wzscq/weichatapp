@@ -1,6 +1,6 @@
 {
   "service":{
-    "port":"0.0.0.0:80"
+    "port":"0.0.0.0:8080"
   },
   "public":{
     "token":"2gb6g99dq52gb6g99dq5",
@@ -22,6 +22,11 @@
     "server":"8.222.203.139:6479",
     "password":"",
     "db":11
+  },
+  "customerCache":{
+    "server":"8.222.203.139:6479",
+    "password":"",
+    "db":12
   },
   "mqtt":{
     "broker":"tcp://121.37.185.248:1983",

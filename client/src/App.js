@@ -7,7 +7,6 @@ import VIPGPTMain from "./pages/VIPGPTMain";
 import VIPGPTLogin from "./pages/VIPGPTLogin";
 import Other from "./pages/Other";
 
-
 const router = createHashRouter([
   {
     path: "/",

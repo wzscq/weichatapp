@@ -11,6 +11,7 @@ type PublicController struct {
 	Token string
 	ChatCompletionHandler ChatCompletionHandler
 	RedirectClient RedirectClient
+	CustomerRepo CustomerRepo
 }
 
 func (pc *PublicController)checkSignature(c *gin.Context){
@@ -48,7 +49,8 @@ func (pc *PublicController)normalMessage(c *gin.Context){
 	go DealMessage(
 		&req,
 		pc.ChatCompletionHandler,
-		pc.RedirectClient)
+		pc.RedirectClient,
+		pc.CustomerRepo)
 	
 	//处理消息
 	log.Println("normalMessage")

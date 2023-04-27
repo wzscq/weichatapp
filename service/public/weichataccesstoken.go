@@ -11,6 +11,8 @@ import (
 type AccessTokenResponse struct {
 	AccessToken string `json:"access_token"`
 	ExpiresIn int `json:"expires_in"`
+	AppID string `json:"appid"`
+	AppSecret string `json:"appSecret"`
 }
 
 var gAccessToken AccessTokenResponse
@@ -48,8 +50,18 @@ func UpdateAccessToken(appID,appSecret string){
 	}
 
 	gAccessToken=at
+	gAccessToken.AppID=appID
+	gAccessToken.AppSecret=appSecret
 }
 
 func GetAccessToken() string{
 	return gAccessToken.AccessToken
+}
+
+func GetAppID() string{
+	return gAccessToken.AppID
+}
+
+func GetAppSecret() string {
+	return gAccessToken.AppSecret
 }

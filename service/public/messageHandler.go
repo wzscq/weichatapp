@@ -8,6 +8,7 @@ const (
 	//消息类型
 	MsgTypeText = "text"
 	MsgTypeEvent = "event"
+	MsgTypeNews = "news"
 )
 
 const (
@@ -26,6 +27,7 @@ type MessageRequest struct {
 	MsgId string `xml:"MsgId"`
 	MsgDataId string `xml:"MsgDataId"`
 	Idx string `xml:"Idx"`
+	CustomerInfo *UserInfoResponse `json:"CustomerInfo"`
 }
 
 type MessageHandler interface {
@@ -35,9 +37,10 @@ type MessageHandler interface {
 func DealMessage(
 	msg *MessageRequest,
 	chatCompletionHandler ChatCompletionHandler,
-	redirectClient RedirectClient){
+	redirectClient RedirectClient,
+	customerRepo CustomerRepo){
 	//调用openai进行问答
-	msgHandler:=GetMessageHandler(msg,chatCompletionHandler,redirectClient)
+	msgHandler:=GetMessageHandler(msg,chatCompletionHandler,redirectClient,customerRepo)
 	if(msgHandler!=nil){
 		msgHandler.HandleMessage(msg)
 	}
@@ -46,7 +49,8 @@ func DealMessage(
 func GetMessageHandler(
 	msg *MessageRequest,
 	chatCompletionHandler ChatCompletionHandler,
-	redirectClient RedirectClient)(MessageHandler){
+	redirectClient RedirectClient,
+	customerRepo CustomerRepo)(MessageHandler){
 	if msg.MsgType==MsgTypeText {
 		return &TextMessageHandler{
 			ChatCompletionHandler:chatCompletionHandler,
@@ -55,6 +59,7 @@ func GetMessageHandler(
 		//if msg.Event==EventTypeSubscribe||msg.Event==EventTypeUnsubscribe	 {
 			return &RedirectMessageHandler{
 			Client:redirectClient,
+			CustomerRepo:customerRepo,
 			}
 		//}
 	}

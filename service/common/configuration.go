@@ -29,7 +29,7 @@ type MessageCacheConf struct {
 	Count int `json:"count"`
 }
 
-type AccountCacheConf struct {
+type RedisCacheConf struct {
 	Server string `json:"server"`
 	Password string `json:"password"`
 	DB int `json:"db"`
@@ -49,7 +49,8 @@ type Config struct {
 	Public publicConf `json:"public"`
 	Openaiproxy OpenaiproxyConf `json:"openaiproxy"`
 	MessageCache MessageCacheConf `json:"messageCache"`
-	AccountCache AccountCacheConf `json:"accountCache"`
+	AccountCache RedisCacheConf `json:"accountCache"`
+	CustomerCache RedisCacheConf `json:"customerCache"`
 	MQTT mqttConf `json:"mqtt"`
 }
 

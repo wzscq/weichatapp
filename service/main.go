@@ -10,6 +10,7 @@ import (
 	"weichatapp/bill"
 	"weichatapp/public"
 	"weichatapp/openaiproxy"
+	"weichatapp/customer"
 	"time"
 )
 
@@ -47,6 +48,20 @@ func main() {
 		DB:conf.AccountCache.DB,
 	}
 
+	customerCache:=&customer.CustomerCache{
+		Server:conf.CustomerCache.Server,
+		Password:conf.CustomerCache.Password, 
+		DB:conf.CustomerCache.DB,
+	}
+
+	customerRepo:=&customer.CustomerRepo{
+		CustomerCache:customerCache,
+	}
+
+	customerController:=&customer.CustomerController{
+		CustomerCache:customerCache,
+	}
+
 	messageCache:=&openaiproxy.MessageCache{
 		Server:conf.MessageCache.Server,
 		Password:conf.MessageCache.Password, 
@@ -79,6 +94,7 @@ func main() {
 		Token:conf.Public.Token,
 		ChatCompletionHandler:chatCompletionHandler,
 		RedirectClient:redirectClient,
+		CustomerRepo:customerRepo,
 	}
 
 	router := gin.Default()
@@ -93,8 +109,9 @@ func main() {
 	//绑定路由
 	publicController.Bind(router)
 	proxyController.Bind(router)
+	customerController.Bind(router)
 	//启动token刷新任务
-	go public.UpdateTokenRoutine(conf.Public.AppID,conf.Public.Secret)
+	//go public.UpdateTokenRoutine(conf.Public.AppID,conf.Public.Secret)
 	//启动服务
 	router.Run(conf.Service.Port)
 }
