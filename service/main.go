@@ -111,7 +111,7 @@ func main() {
 	proxyController.Bind(router)
 	customerController.Bind(router)
 	//启动token刷新任务
-	//go public.UpdateTokenRoutine(conf.Public.AppID,conf.Public.Secret)
+	go public.UpdateTokenRoutine(conf.Public.AppID,conf.Public.Secret)
 	//启动服务
 	router.Run(conf.Service.Port)
 }
