@@ -41,7 +41,7 @@ func (pc *CustomerController)getCustomerInfo(c *gin.Context){
 		return 
 	}
 
-	customerInof:=&CustomerInfo{
+	customerInfo:=&CustomerInfo{
 		OpenID:accessToken.OpenID,
 		AccessToken:accessToken.AccessToken,
 		RefreshToken:accessToken.RefreshToken,
@@ -49,7 +49,7 @@ func (pc *CustomerController)getCustomerInfo(c *gin.Context){
 		Scope:accessToken.Scope,
 	}
 
-	pc.CustomerCache.SaveCustomerInfo(customerInof)
+	pc.CustomerCache.SaveCustomerInfo(customerInfo)
 
 	userInfo:=public.RefreshCustomerInfo(accessToken.OpenID,accessToken.AccessToken)
 	c.IndentedJSON(http.StatusOK, userInfo)
