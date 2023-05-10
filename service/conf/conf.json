@@ -9,7 +9,8 @@
   },
   "openaiproxy":{
     "url":"http://8.222.203.139:8080/openaiproxy/openai/v1/chat/completions/GPT3Dot5Turbo",
-    "maxTokens":1000
+    "maxTokens":1000,
+    "key":""
   },
   "messageCache":{
     "server":"8.222.203.139:6479",

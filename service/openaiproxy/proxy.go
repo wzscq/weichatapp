@@ -7,6 +7,11 @@ import (
 	"log"
 	"net/http"
 	"weichatapp/common"
+	"fmt"
+	"io"
+	"context"
+	"errors"
+	"strings"
 	openai "github.com/sashabaranov/go-openai"
 )
 
@@ -115,4 +120,68 @@ func (h *GPTChatCompletionHandler)ChatCompletion(sessionid,question string)(stri
 	})
 	h.MessageCache.SetMessages(sessionid,messages)
 	return answer
+}
+
+func (h *GPTChatCompletionHandler)ProxyStreamCompletion(sessionid string,messages []openai.ChatCompletionMessage,flusher http.Flusher){
+	w:=flusher.(io.Writer)
+	//检查账户余额
+	maxTokens:=h.AccountCache.GetToken(sessionid)
+	if maxTokens<=0 {
+		fmt.Fprintf(w, "data: 您的账户余额不足，请充值后再试\n\n")
+		fmt.Fprintf(w, "event: close")
+		return
+	}
+	
+	if maxTokens>h.OpenaiproxyConf.MaxTokens {
+		maxTokens=h.OpenaiproxyConf.MaxTokens
+	}
+
+	//调用openai接口
+	client := openai.NewClient(h.OpenaiproxyConf.Key)
+	ctx := context.Background()
+	gptReq := openai.ChatCompletionRequest{
+		Model:     openai.GPT3Dot5Turbo,
+		Messages: messages,
+		MaxTokens: maxTokens,
+		Stream: true,
+	}
+	log.Println("ProxyStreamCompletion CreateChatCompletionStream")
+	stream, err := client.CreateChatCompletionStream(ctx, gptReq)
+	if err != nil {
+		fmt.Printf("ProxyStreamCompletion error: %v\n", err)
+		fmt.Fprintf(w, "data: 访问GPT接口出错，请稍后重试，或联系管理员处理\n\n")
+		fmt.Fprintf(w, "event: close")
+		return
+	}
+	defer stream.Close()
+
+	totalTokens:=0
+	log.Println("ProxyStreamCompletion receive response")
+	for {
+		response, err := stream.Recv()
+		if errors.Is(err, io.EOF) {
+			fmt.Println("\nStream finished")
+			break;
+		}
+
+		if err != nil {
+			fmt.Printf("\nStream error: %v\n", err)
+			break;
+		}
+
+		totalTokens=totalTokens+1
+		contentStr:=response.Choices[0].Delta.Content
+		//将内容中的\n替换为<br/>
+		contentStr=strings.Replace(contentStr,"\n","<br/>",-1)
+		log.Println(contentStr)
+		fmt.Fprintf(w, "data: "+contentStr+"\n\n")
+		flusher.Flush()
+	}
+
+	fmt.Fprintf(w, "event: close")
+
+	//
+	if h.BillingHandler!=nil {
+		h.BillingHandler.BillingRecord(sessionid,totalTokens)
+	}
 }

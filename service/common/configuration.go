@@ -19,6 +19,7 @@ type publicConf struct {
 type OpenaiproxyConf struct {
 	Url string `json:"url"`
 	MaxTokens int `json:"maxtokens"`
+	Key string `json:"key"`
 }
 
 type MessageCacheConf struct {

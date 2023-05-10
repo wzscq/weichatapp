@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 import ChatInput from './ChatInput';
 import ChatList from './ChatList';
-import { chatCompleteProxy } from '../../utils/gptfunctions';
+//import { chatCompleteProxy } from '../../utils/gptfunctions';
+import { chatStreamCompleteProxy } from '../../utils/gptStream';
 
 import './index.css';
 import { Button } from 'antd';
@@ -39,9 +40,14 @@ export default function Main(){
     if(newRecords.length>20){
       newRecords=newRecords.slice(newRecords.length-20);
     }
+    let gContent="";
     //将消息发送给openaiProxy
-    chatCompleteProxy(userID,newRecords).then((content)=>{
-      setRecords([...newRecords,{content,role:'assistant',viewLength:0,length:content.length}]);
+    chatStreamCompleteProxy(userID,newRecords,(text)=>{
+      //br 替换回回车
+      text=text.replaceAll(/<br\/>/g,'\n');
+      gContent+=text;
+      console.log(gContent);
+      setRecords([...newRecords,{content:gContent,role:'assistant',viewLength:gContent.length,length:gContent.length}]);
     });
     setRecords([...newRecords,{content:'正在处理您的请求，请稍等 ...',role:'assistant',}]);
   }
