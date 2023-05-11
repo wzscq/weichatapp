@@ -42,7 +42,8 @@ const chatStreamCompleteProxy=(userID,messages,callBack)=>{
         // do nothing to automatically retry. You can also
         // return a specific retry interval here.
       }
-    }
+    },
+    openWhenHidden: true
   });
 }
 
